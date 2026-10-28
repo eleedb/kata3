@@ -8,13 +8,13 @@ public class UserDto {
     public String email;
     public Dob dob;
 
-    private class Name {
+    public class Name {
         public String title;
         public String first;
         public String last;
     }
 
-    private class Location {
+    public class Location {
         public Street street;
         public String city;
         public String state;
@@ -23,22 +23,22 @@ public class UserDto {
         public Coordinates coordinates;
     }
 
-    private class Street {
+    public class Street {
         public int number;
         public String name;
     }
 
-    private class Coordinates {
+    public class Coordinates {
         public double latitude;
         public double longitude;
     }
 
-    private class Dob {
+    public class Dob {
         public String date;
         public int age;
     }
 
-    private class Picture {
+    public class Picture {
         public String large;
         public String medium;
     }
