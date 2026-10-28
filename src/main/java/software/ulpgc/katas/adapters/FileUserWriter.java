@@ -14,7 +14,7 @@ public class FileUserWriter implements UserWriter {
 
     @Override
     public void write(User user) {
-        try(OutputStream outputStream = new FileOutputStream(new File(file, user.name() + "jpg"))){
+        try(OutputStream outputStream = new FileOutputStream(new File(file, user.name() + ".jpg"))){
             write(user, outputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
