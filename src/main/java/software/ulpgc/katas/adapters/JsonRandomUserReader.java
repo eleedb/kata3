@@ -36,8 +36,8 @@ public class JsonRandomUserReader implements UserReader {
     }
 
     private List<User> readFrom(HttpRequest request) throws IOException, InterruptedException {
-        try (HttpClient client = HttpClient.newHttpClient()) {
-            return readFrom(client.send(request, HttpResponse.BodyHandlers.ofString()));
+        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+            return readFrom(httpClient.send(request, HttpResponse.BodyHandlers.ofString()));
         }
     }
 
@@ -50,15 +50,15 @@ public class JsonRandomUserReader implements UserReader {
     }
 
     private List<User> readFrom(JsonArray items) throws IOException {
-        List<User> list = new ArrayList<>();
-        for (JsonElement item : items) {
-            list.add(readFrom(item));
+        List<User> users = new ArrayList<>();
+        for (JsonElement element : items) {
+            users.add(readFrom(element));
         }
-        return list;
+        return users;
     }
 
-    private User readFrom(JsonElement item) throws IOException {
-        return readFrom(new Gson().fromJson(item, UserDto.class));
+    private User readFrom(JsonElement element) throws IOException {
+        return readFrom(new Gson().fromJson(element, UserDto.class));
     }
 
     private User readFrom(UserDto dto) throws IOException {
@@ -67,22 +67,20 @@ public class JsonRandomUserReader implements UserReader {
                 Gender.valueOf(dto.gender),
                 Instant.parse(dto.dob.date),
                 photoIn(dto.picture.large)
-
         );
     }
 
-    private User.Photo photoIn(String url) throws IOException {
-        return photoIn(new URL(url));
+    private User.Photo photoIn(String large) throws IOException {
+        return photoIn(new URL(large));
     }
 
     private User.Photo photoIn(URL url) throws IOException {
-        try (InputStream inputStream = url.openStream()) {
-            return photoIn(inputStream);
+        try (InputStream is = url.openStream()) {
+            return photoIn(is);
         }
-
     }
 
-    private User.Photo photoIn(InputStream inputStream) throws IOException {
-        return new User.Photo(inputStream.readAllBytes());
+    private User.Photo photoIn(InputStream is) throws IOException {
+        return new User.Photo(is.readAllBytes());
     }
 }
